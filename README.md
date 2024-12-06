@@ -1,4 +1,8 @@
-# Extra-credit Assignment for CPS544
+# Extra-credit Assignment for CPS544 - Concurrency
+
+## Algorithm
+
+Just QuickSort with goroutines.
 
 ## Requirements
 
