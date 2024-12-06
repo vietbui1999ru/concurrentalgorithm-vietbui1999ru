@@ -2,7 +2,7 @@
 
 ## Algorithm
 
-Just QuickSort with goroutines.
+Just InsertionSort with goroutines.
 Taken from [CMU](https://www.cs.cmu.edu/~scandal/nesl/alg-sequence.html#insertsort)
 
 ## Requirements
