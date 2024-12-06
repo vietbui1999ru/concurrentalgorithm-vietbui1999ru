@@ -15,6 +15,7 @@ import (
 // in take(rest,i)++[head]++drop(rest,i)
 //
 // InsertSortConcurrent runs in O(n) time complexity (said on the website)
+// takes in original array, a mutex, and a waitgroup
 func InsertSortConcurrent(arr []int, mutex *sync.Mutex, wg *sync.WaitGroup) []int {
   defer func() {
 		if wg != nil {
@@ -29,14 +30,20 @@ func InsertSortConcurrent(arr []int, mutex *sync.Mutex, wg *sync.WaitGroup) []in
 
   head := arr[0]
   sorted := make([]int, len(arr))
+
+  // 
   var innerWg sync.WaitGroup
   innerWg.Add(1)
+
+  // goroutine to sort the rest of the array
   go func() {
     sorted = InsertSortConcurrent(arr[1:], mutex, &innerWg)
   }()
   innerWg.Wait()
 
   insertIndex := 0
+
+  // mutex to lock the sorted array
   mutex.Lock()
   for _, v := range sorted {
     if v < head {
@@ -45,7 +52,10 @@ func InsertSortConcurrent(arr []int, mutex *sync.Mutex, wg *sync.WaitGroup) []in
       break
     }
   }
+  
+  // mutex to unlock the sorted array
   mutex.Unlock()
+
   mutex.Lock()
 
   result := append(sorted[:insertIndex], append([]int{head}, sorted[insertIndex:]...)...)
